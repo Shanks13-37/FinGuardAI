@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}FinGuard AI - User Portal{% endblock %}
+
+{% block content %}
+<div class="two-column-layout">
+    <!-- Left Column: Transaction Input -->
+    <div class="panel glass-panel input-panel">
+        <h2>Initiate Transaction</h2>
+        <p class="subtitle">Enter transaction details to simulate a UPI transfer.</p>
+
+        <form id="transaction-form" class="custom-form">
+            <div class="form-group">
+                <label for="account_id">Sender Account ID (UPI ID)</label>
+                <input type="text" id="account_id" name="account_id" placeholder="user@upi" required>
+            </div>
+
+            <div class="form-group">
+                <label for="recipient">Recipient UPI ID</label>
+                <input type="text" id="recipient" name="recipient" placeholder="merchant@upi" required>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount (₹)</label>
+                <input type="number" id="amount" name="amount" placeholder="e.g. 5000" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="e.g. Mumbai, India" required>
+            </div>
+
+            <button type="submit" class="btn primary-btn" id="submit-btn">
+                <span class="btn-text">Send Payment</span>
+                <span class="loader hidden"></span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Right Column: AI Fraud Analysis (Hidden until requested) -->
+    <div class="panel glass-panel hidden" id="result-panel">
+        <div class="result-header">
+            <h2>AI Transaction Analysis</h2>
+            <div class="status-badge" id="tx-status-badge">Processing...</div>
+        </div>
+
+        <div class="analysis-section">
+            <h3>Fraud Probability</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="prob-bar"></div>
+            </div>
+            <p class="prob-text"><span id="prob-value">0</span>%</p>
+        </div>
+
+        <div class="analysis-section llm-context">
+            <h3>GPT Contextual Assistant</h3>
+            <div class="llm-message-box" id="llm-message">
+                Analyzing transaction context...
+            </div>
+        </div>
+
+        <div class="analysis-section shap-values">
+            <h3>Explainability (SHAP Values)</h3>
+            <p class="subtitle text-small">Key factors influencing this prediction:</p>
+            <ul class="shap-list" id="shap-list">
+                <!-- SHAP values injected here -->
+            </ul>
+        </div>
+
+        <div id="tx-actions" class="hidden">
+            <button class="btn secondary-btn" id="cancel-btn">Cancel Transaction</button>
+            <button class="btn primary-btn warning-btn" id="proceed-btn">Proceed Anyway</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}FinGuard AI - Admin Analytics{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="header-section">
+        <h2>Fraud Detection Analytics & Reports</h2>
+        <p class="subtitle">Real-time monitoring of systemic anomalies and AI predictions from the LSTM/GRU & SHAP
+            pipelines.</p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+        <div class="kpi-card glass-panel">
+            <div class="kpi-title">Total Transactions (24h)</div>
+            <div class="kpi-value">24,592</div>
+            <div class="kpi-trend positive">↑ 12%</div>
+        </div>
+        <div class="kpi-card glass-panel">
+            <div class="kpi-title">Flagged Fraud Attempts</div>
+            <div class="kpi-value warning-text">1,204</div>
+            <div class="kpi-trend negative">↑ 5%</div>
+        </div>
+        <div class="kpi-card glass-panel">
+            <div class="kpi-title">Avg Prediction Latency</div>
+            <div class="kpi-value">42ms</div>
+            <div class="kpi-trend positive">↓ 2ms</div>
+        </div>
+        <div class="kpi-card glass-panel">
+            <div class="kpi-title">Model Accuracy (F1)</div>
+            <div class="kpi-value gradient-text">96.8%</div>
+            <div class="kpi-trend neutral">--</div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-grid">
+        <!-- Main Line Chart -->
+        <div class="chart-panel glass-panel span-2">
+            <h3>Transaction Volume & Fraud Spikes (7 Days)</h3>
+            <div class="chart-container">
+                <canvas id="volumeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Polar Area or Doughnut for feature importance -->
+        <div class="chart-panel glass-panel">
+            <h3>Global Feature Importance (SHAP Aggregate)</h3>
+            <div class="chart-container">
+                <canvas id="featureChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Mock Chart.js implementation for Admin Dashboard
+    document.addEventListener("DOMContentLoaded", function () {
+        // Line Chart
+        const ctxVolume = document.getElementById('volumeChart').getContext('2d');
+        new Chart(ctxVolume, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Total Volume',
+                        data: [3200, 3100, 3500, 3800, 4100, 3700, 3200],
+                        borderColor: '#0ea5e9', // Blueish
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Fraud Flagged',
+                        data: [150, 140, 180, 220, 300, 250, 130],
+                        borderColor: '#f43f5e', // Redish
+                        borderDash: [5, 5],
+                        backgroundColor: 'transparent',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#e2e8f0' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+                    y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+                }
+            }
+        });
+
+        // Doughnut Chart (Feature Importance)
+        const ctxFeature = document.getElementById('featureChart').getContext('2d');
+        new Chart(ctxFeature, {
+            type: 'doughnut',
+            data: {
+                labels: ['Amount', 'Location', 'Velocity', 'Time of Day', 'New Payee'],
+                datasets: [{
+                    data: [35, 25, 20, 10, 10],
+                    backgroundColor: [
+                        '#f43f5e', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#e2e8f0', padding: 20 } }
+                },
+                cutout: '70%'
+            }
+        });
+    });
+</script>
+{% endblock %}
