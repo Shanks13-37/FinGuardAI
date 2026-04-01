@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}FinGuard AI - Admin Login{% endblock %}
+
+{% block content %}
+<div class="two-column-layout" style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+    <div class="panel glass-panel input-panel" style="max-width: 500px; width: 100%;">
+        <h2 style="text-align: center;">Admin Dashboard Login</h2>
+        <p class="subtitle" style="text-align: center;">Enter your credentials to access analytics.</p>
+
+        {% if error %}
+        <div style="color: var(--danger); text-align: center; margin-bottom: 1rem; font-weight: 500;">{{ error }}</div>
+        {% endif %}
+
+        <form action="{{ url_for('login') }}" method="POST" class="custom-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="admin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="admin" required>
+            </div>
+
+            <button type="submit" class="btn primary-btn" style="width: 100%; justify-content: center;">
+                <span class="btn-text">Log In</span>
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

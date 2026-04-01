@@ -4,20 +4,30 @@ import random
 def get_fraud_prediction(transaction_data):
     """
     Mock ML model prediction and explainability (SHAP/Captum).
-    In a real scenario, this would load `models/lstm_model.pt` or `models/rf_model.pkl`.
+    In a real scenario, this would load models like `models/lstm_model.pt` or `models/rf_model.pkl`.
     """
     # Simple heuristic to make the stub somewhat dynamic based on amount
     amount = float(transaction_data.get('amount', 0))
     
-    # Simulate probability calculation
+    # Base probability calculation
     if amount > 50000:
-        fraud_probability = random.uniform(0.7, 0.99)
+        base_prob = random.uniform(0.75, 0.99)
     elif amount > 10000:
-        fraud_probability = random.uniform(0.3, 0.7)
+        base_prob = random.uniform(0.3, 0.75)
     else:
-        fraud_probability = random.uniform(0.01, 0.15)
+        base_prob = random.uniform(0.01, 0.20)
         
-    is_fraud = fraud_probability >= 0.65
+    # Simulate 4 distinct ML models
+    models_breakdown = [
+        {"name": "Random Forest", "prob": max(0.0, min(1.0, base_prob + random.uniform(-0.1, 0.1)))},
+        {"name": "LSTM Matrix", "prob": max(0.0, min(1.0, base_prob + random.uniform(-0.15, 0.15)))},
+        {"name": "XGBoost", "prob": max(0.0, min(1.0, base_prob + random.uniform(-0.05, 0.05)))},
+        {"name": "Isolation Forest", "prob": max(0.0, min(1.0, base_prob + random.uniform(-0.2, 0.2)))}
+    ]
+    
+    # Calculate ensemble
+    ensemble_prob = sum(m['prob'] for m in models_breakdown) / len(models_breakdown)
+    is_fraud = ensemble_prob >= 0.65
 
     # Mock feature importances (SHAP values)
     features = ['Location Mismatch', 'Unusual Time', 'High Velocity', 'Large Amount', 'New Payee']
@@ -45,8 +55,13 @@ def get_fraud_prediction(transaction_data):
     # Sort by importance descending
     feature_importances.sort(key=lambda x: x['importance'], reverse=True)
 
+    # Round individual model probabilities
+    for m in models_breakdown:
+        m['prob'] = round(m['prob'] * 100, 2)
+        
     return {
         "is_fraud": is_fraud,
-        "probability": round(fraud_probability * 100, 2),
+        "probability": round(ensemble_prob * 100, 2),
+        "model_breakdown": models_breakdown,
         "shap_values": feature_importances
     }

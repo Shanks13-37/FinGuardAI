@@ -4,23 +4,28 @@
 
 {% block content %}
 <div class="admin-dashboard">
-    <div class="header-section">
-        <h2>Fraud Detection Analytics & Reports</h2>
-        <p class="subtitle">Real-time monitoring of systemic anomalies and AI predictions from the LSTM/GRU & SHAP
-            pipelines.</p>
+    <div class="header-section" style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+            <h2>Fraud Detection Analytics & Reports</h2>
+            <p class="subtitle">Real-time monitoring of systemic anomalies and AI predictions from the LSTM/GRU & SHAP
+                pipelines.</p>
+        </div>
+        <div>
+            <a href="{{ url_for('logout') }}" class="btn secondary-btn" style="text-decoration: none;">Logout</a>
+        </div>
     </div>
 
     <!-- KPI Cards -->
     <div class="kpi-grid">
         <div class="kpi-card glass-panel">
-            <div class="kpi-title">Total Transactions (24h)</div>
-            <div class="kpi-value">24,592</div>
-            <div class="kpi-trend positive">↑ 12%</div>
+            <div class="kpi-title">Total Transactions (Session)</div>
+            <div class="kpi-value">{{ total_tx }}</div>
+            <div class="kpi-trend neutral">Live</div>
         </div>
         <div class="kpi-card glass-panel">
             <div class="kpi-title">Flagged Fraud Attempts</div>
-            <div class="kpi-value warning-text">1,204</div>
-            <div class="kpi-trend negative">↑ 5%</div>
+            <div class="kpi-value warning-text">{{ flagged }}</div>
+            <div class="kpi-trend negative">Alerts</div>
         </div>
         <div class="kpi-card glass-panel">
             <div class="kpi-title">Avg Prediction Latency</div>
@@ -50,6 +55,46 @@
             <div class="chart-container">
                 <canvas id="featureChart"></canvas>
             </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions Table -->
+    <div class="panel glass-panel" style="margin-top: 2rem;">
+        <h3>Recent Transactions</h3>
+        <div style="overflow-x:auto;">
+            <table style="width: 100%; text-align: left; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted);">
+                        <th style="padding: 10px;">Txn ID</th>
+                        <th style="padding: 10px;">Recipient</th>
+                        <th style="padding: 10px;">Amount (₹)</th>
+                        <th style="padding: 10px;">Status</th>
+                        <th style="padding: 10px;">Fraud Prob.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in recent_transactions %}
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 10px;">{{ tx.transaction_id }}</td>
+                        <td style="padding: 10px;">{{ tx.recipient }}</td>
+                        <td style="padding: 10px;">{{ tx.amount }}</td>
+                        <td style="padding: 10px;">
+                            {% if tx.prediction.is_fraud %}
+                            <span class="status-badge danger" style="padding: 2px 8px; font-size: 0.8em;">Fraud</span>
+                            {% else %}
+                            <span class="status-badge success" style="padding: 2px 8px; font-size: 0.8em;">Clean</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 10px;">{{ tx.prediction.probability }}%</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="padding: 20px; text-align: center; color: var(--text-muted);">No
+                            transactions tracked in this session yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

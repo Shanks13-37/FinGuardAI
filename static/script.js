@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
         statusBadge.className = 'status-badge';
         llmMessage.textContent = 'Generating contextual analysis via GPT...';
         shapList.innerHTML = '';
+        const modelList = document.getElementById('model-list');
+        if (modelList) modelList.innerHTML = '';
         txActions.classList.add('hidden');
 
         // Capture data
@@ -110,6 +112,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update Context LLM text
         llmMessage.textContent = explanation;
+
+        // Populate Model Breakdown
+        const modelList = document.getElementById('model-list');
+        if (modelList && prediction.model_breakdown) {
+            prediction.model_breakdown.forEach(m => {
+                const li = document.createElement('li');
+                const barColor = m.prob >= 65 ? 'var(--danger)' : (m.prob >= 30 ? 'var(--warning)' : 'var(--success)');
+                li.innerHTML = `
+                    <span style="width: 120px; font-size: 0.9em; color: var(--text-muted);">${m.name}</span>
+                    <div class="shap-value-bar">
+                        <div class="shap-value-fill" style="width: ${m.prob}%; background-color: ${barColor};"></div>
+                    </div>
+                    <span style="font-size: 0.9em; width: 40px; text-align: right;">${m.prob}%</span>
+                `;
+                modelList.appendChild(li);
+            });
+        }
 
         // Populate SHAP values
         prediction.shap_values.forEach(item => {

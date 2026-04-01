@@ -45,11 +45,18 @@
         </div>
 
         <div class="analysis-section">
-            <h3>Fraud Probability</h3>
+            <h3>Ensemble Fraud Probability</h3>
             <div class="progress-bar-container">
                 <div class="progress-bar" id="prob-bar"></div>
             </div>
             <p class="prob-text"><span id="prob-value">0</span>%</p>
+        </div>
+
+        <div class="analysis-section model-breakdown">
+            <h3>Model Consensus (4 Models)</h3>
+            <ul class="shap-list" id="model-list">
+                <!-- Model values injected here -->
+            </ul>
         </div>
 
         <div class="analysis-section llm-context">
