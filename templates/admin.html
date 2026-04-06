@@ -5,10 +5,15 @@
 {% block content %}
 <div class="admin-dashboard">
     <div class="header-section" style="display: flex; justify-content: space-between; align-items: start;">
-        <div>
-            <h2>Fraud Detection Analytics & Reports</h2>
-            <p class="subtitle">Real-time monitoring of systemic anomalies and AI predictions from the LSTM/GRU & SHAP
-                pipelines.</p>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo"
+                style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary);">
+            <div>
+                <h2>Fraud Detection Analytics & Reports</h2>
+                <p class="subtitle">Real-time monitoring of systemic anomalies and AI predictions from the LSTM/GRU &
+                    SHAP
+                    pipelines.</p>
+            </div>
         </div>
         <div>
             <a href="{{ url_for('logout') }}" class="btn secondary-btn" style="text-decoration: none;">Logout</a>
@@ -177,12 +182,16 @@
     new Chart(ctxTimeline, {
         type: 'bar',
         data: {
-            labels: timelineDisplayLabels,
+            labels: timelineDisplayData.map((_, i) => `#${i + 1}`),
             datasets: [{
                 label: 'Fraud Probability (%)',
                 data: timelineDisplayData,
-                backgroundColor: timelineDisplayData.map(v => v > 50 ? '#f43f5e' : '#0ea5e9'),
-                borderRadius: 4,
+                backgroundColor: timelineDisplayData.map(v => {
+                    if (v > 75) return '#f43f5e';
+                    if (v > 40) return '#f59e0b';
+                    return '#0ea5e9';
+                }),
+                borderRadius: 6,
                 borderWidth: 0
             }]
         },
@@ -194,7 +203,7 @@
             },
             scales: {
                 x: {
-                    ticks: { color: '#94a3b8', maxRotation: 45, minRotation: 45 },
+                    ticks: { display: false },
                     grid: { display: false }
                 },
                 y: {

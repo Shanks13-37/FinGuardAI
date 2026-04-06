@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnText = submitBtn.querySelector('.btn-text');
     const loader = submitBtn.querySelector('.loader');
     const resultPanel = document.getElementById('result-panel');
+    const leftResultPanel = document.getElementById('left-result-panel');
 
     // Result Elements
     const statusBadge = document.getElementById('tx-status-badge');
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnText.textContent = 'Processing...';
         loader.classList.remove('hidden');
         resultPanel.classList.remove('hidden');
+        if (leftResultPanel) leftResultPanel.classList.remove('hidden');
 
         // Reset old results visually
         probBar.style.width = '0%';

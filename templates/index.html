@@ -66,10 +66,19 @@
             </div>
 
             <button type="submit" class="btn primary-btn" id="submit-btn" style="margin-top:20px;">
-                <span class="btn-text">Submit Transaction</span>
+                <span class="btn-text">Send Payment</span>
                 <span class="loader hidden"></span>
             </button>
         </form>
+
+        <div id="left-result-panel" class="hidden" style="margin-top: 30px;">
+            <div class="analysis-section model-breakdown" style="border-bottom: none;">
+                <h3>Model Consensus (4 Models)</h3>
+                <ul class="shap-list" id="model-list">
+                    <!-- Model values injected here -->
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Right Column: AI Fraud Analysis (Hidden until requested) -->
@@ -87,12 +96,6 @@
             <p class="prob-text"><span id="prob-value">0</span>%</p>
         </div>
 
-        <div class="analysis-section model-breakdown">
-            <h3>Model Consensus (4 Models)</h3>
-            <ul class="shap-list" id="model-list">
-                <!-- Model values injected here -->
-            </ul>
-        </div>
 
         <div class="analysis-section llm-context">
             <h3>GPT Contextual Assistant</h3>
