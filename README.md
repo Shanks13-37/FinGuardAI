@@ -114,33 +114,6 @@ If you hit TensorFlow / protobuf issues, install a compatible protobuf version:
 pip install protobuf==6.31.1
 ```
 
-### 3. Optional: configure Gemini API key
-
-Create a `.env` file in the project root:
-
-```env
-GEMINI_API_KEY=your_api_key_here
-```
-
-If this key is not provided, the app still runs and falls back to a local mock explanation.
-
-## Running the App
-
-Start the Flask server:
-
-```powershell
-python app.py
-```
-
-Open the app in your browser:
-
-- User portal: `http://127.0.0.1:5000/`
-- Admin login: `http://127.0.0.1:5000/login`
-
-### Default admin credentials
-
-- Username: `admin`
-- Password: `admin`
 
 ## Test Scripts
 
@@ -184,51 +157,4 @@ FinGuardAI/
 - SHAP must be installed correctly for explainability to work.
 - TensorFlow may print oneDNN / CPU optimization logs on startup; these are informational.
 
-## Troubleshooting
 
-### `ModuleNotFoundError: No module named 'google.generativeai'`
-
-Install the Gemini package:
-
-```powershell
-pip install google-generativeai
-```
-
-### TensorFlow protobuf version error
-
-Install a compatible protobuf version:
-
-```powershell
-pip install protobuf==6.31.1
-```
-
-### SHAP not installed
-
-Install SHAP:
-
-```powershell
-pip install shap
-```
-
-### TensorFlow startup warnings
-
-These messages are often informational. To reduce startup noise:
-
-```powershell
-$env:TF_CPP_MIN_LOG_LEVEL="3"
-$env:TF_ENABLE_ONEDNN_OPTS="0"
-python app.py
-```
-
-## Future Improvements
-
-- Persistent database storage for transactions
-- Secure admin authentication
-- Live-computed dashboard metrics
-- Better model/version management
-- More robust deployment configuration
-- Faster or cached SHAP generation
-
-## License
-
-No license file is currently included in the repository.
